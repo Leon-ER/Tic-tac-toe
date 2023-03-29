@@ -13,21 +13,32 @@
     </header>
     <section id="popUp">
       <button id="myBtn">Player selection</button>
+      <button id="reset">Reset Game</button>
       <div id="myModal" class="modal">
         <div class="modal-content">
           <span class="close">&times;</span>
           <h2>Player selection</h2>
           <p>Player one is X and player two is O</p>
-          <label for="playerName">Player 1</label>
-          <input type="text" id="player1Name">
-          <label for="player2Name">Player 2</label>
-          <input type="text" id="player2Name">
-          <button id="start-btn">Start</button>
+          <form action="#" id="names">
+            <label for="playerName">Player 1</label>
+            <input type="text" id="player1Name" />
+            <label for="player2Name">Player 2</label>
+            <input type="text" id="player2Name" />
+            <button id="start-btn">Start</button>
+          </form>
         </div>
       </div>
     </section>
-    <section id="boardContainer">
-
+    <section id="boardContainer"></section>
+    <section id="players">
+      <div class="p1">
+        <p id="playerOne"></p>
+        <p id="oneScore"></p>
+      </div>
+      <div class="p2">
+        <p id="playerTwo"></p>
+        <p id="twoScore"></p>
+      </div>
     </section>
     <section id="endGameMsg"></section>
   </body>
