@@ -37,12 +37,12 @@ const gameBoard = (() => {
   return { board, render };
 })();
 // factroy functions for player 1 and player 2
-const playerFactory = (name, marker) => {
-  return { name, marker };
+const playerFactory = (name, marker , score) => {
+  return { name, marker ,score};
 };
 
-const player1 = playerFactory(null, "X");
-const player2 = playerFactory(null, "O");
+const player1 = playerFactory(null, "X" , score = 0);
+const player2 = playerFactory(null, "O", score = 0);
 // main game function
 const game = (() => {
   let currentPlayer = player1;
@@ -62,9 +62,11 @@ const game = (() => {
     }
   };
   // checks for all the possible winning positions
+
   const checkForEndGame = () => {
     const scorePOne = document.getElementById("oneScore");
     const scorePTwo = document.getElementById("twoScore");
+
     const winningCombinations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -78,8 +80,7 @@ const game = (() => {
     //  checks who won or tie
     const isBoardFull = gameBoard.board.every((cell) => cell !== "");
     let winner = null;
-    let scoreOne = 0;
-    let scoreTwo = 0;
+    // loops through winningCombinations and checks for 3 in a row
     for (let i = 0; i < winningCombinations.length; i++) {
       const [a, b, c] = winningCombinations[i];
       if (
@@ -91,14 +92,13 @@ const game = (() => {
         winner = currentPlayer;
         displayController.showEndGameMessage(winner);
         isGameEnded = true;
+        //  adjusts the score for both players
         if (winner == player1) {
-          scoreOne++;
-          scorePOne.innerHTML = scoreOne;
-          console.log(scoreOne)
+          player1.score ++;
+          scorePOne.innerHTML = player1.score;
         } else {
-          scoreTwo++;
-          scorePTwo.innerHTML = scoreTwo;
-          console.log(scoreTwo)
+          player2.score ++;
+          scorePTwo.innerHTML = player2.score;
         }
         return;
       }
@@ -117,6 +117,7 @@ const game = (() => {
     displayController.hideEndGameMessage();
     isGameEnded = false;
   };
+
   return { addMark, restart };
 })();
 
@@ -146,32 +147,39 @@ const displayController = (() => {
   };
   return { showEndGameMessage, hideEndGameMessage };
 })();
+
 // selectors
 const startButton = document.querySelector("#start-btn");
 const player1Input = document.querySelector("#player1Name");
 const player2Input = document.querySelector("#player2Name");
 const resetBtn = document.querySelector("#reset");
+const resetGameBtn = document.querySelector('#resetGame')
 
 // start button in the modal
-startButton.addEventListener("click", () => {
+startButton.addEventListener("click", (e) => {
+  e.preventDefault();
   const player1Name = player1Input.value;
   const player2Name = player2Input.value;
   player1.name = player1Name;
   player2.name = player2Name;
-  const playerOne = document.getElementById('playerOne')
-  const playerTwo = document.getElementById('playerTwo')
-  playerOne.innerHTML = player1.name
-  playerTwo.innerHTML = player2.name
+  const playerOne = document.getElementById("playerOne");
+  const playerTwo = document.getElementById("playerTwo");
+  playerOne.innerHTML = player1.name;
+  playerTwo.innerHTML = player2.name;
   document.getElementById("names").reset();
   modal.style.display = "none";
 });
-
 const restartGame = () => {
   game.restart();
   displayController.hideEndGameMessage();
 };
+// button to restart round
 resetBtn.addEventListener("click", () => {
   restartGame();
 });
+// button to reset game
+resetGameBtn.addEventListener('click',()=>{
+  location.reload();
+})
 // player names and score
 gameBoard.render();
